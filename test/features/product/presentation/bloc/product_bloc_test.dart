@@ -34,16 +34,19 @@ void main() {
 
     blocTest<ProductBloc, ProductState>(
       'emits [ProductLoading, ProductLoaded] when GetProductEvent is added successfully',
-      build: () => ProductBloc(
-        doGetProduct: mockDoGetProduct,
-        doAddProduct: mockDoAddProduct,
-        doUpdateProduct: mockDoUpdateProduct,
-        doDeleteProduct: mockDoDeleteProduct,
-      ),
-      act: (bloc) => {
-        when(mockDoGetProduct).thenAnswer((_) async => Right(dummyProduct)),
-        bloc.add(GetProductEvent()),
+      build: () {
+        when(mockDoGetProduct).thenAnswer(
+          (_) async => Right(dummyProduct),
+        );
+
+        return ProductBloc(
+          doGetProduct: mockDoGetProduct,
+          doAddProduct: mockDoAddProduct,
+          doUpdateProduct: mockDoUpdateProduct,
+          doDeleteProduct: mockDoDeleteProduct,
+        );
       },
+      act: (bloc) => {bloc.add(GetProductEvent())},
       expect: () => [
         ProductLoading(ProductState(products: [], selectedProduct: Product.empty())),
         ProductLoaded(ProductState(products: dummyProduct, selectedProduct: Product.empty())),

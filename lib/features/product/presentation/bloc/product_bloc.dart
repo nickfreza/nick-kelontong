@@ -63,13 +63,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         ),
       ),
     );
-
-    // final result = await doGetProduct();
-
-    // result.fold(
-    //   (l) => emit(ProductFetchFailed(state)),
-    //   (r) => emit(ProductLoaded(state.copyWith(products: r))),
-    // );
   }
 
   FutureOr<void> _onAddProductEvent(
