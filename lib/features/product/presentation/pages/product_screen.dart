@@ -70,33 +70,37 @@ class _ProductScreenState extends State<ProductScreen> {
         },
         builder: (context, state) {
           return Stack(
+            alignment: Alignment.bottomRight,
             children: [
               if (state is ProductLoading)
                 const Center(child: CircularProgressIndicator())
               else if (state.products.isNotEmpty)
-                ListView.builder(
-                  controller: _scrollController,
-                  shrinkWrap: true,
-                  itemCount: state.products.length + (_isLoading ? 1 : 0),
-                  itemBuilder: (ctx, index) {
-                    if (index < state.products.length) {
-                      return ProductItem(
-                        product: state.products[index],
-                        onSelectProduct: (product) {
-                          context.read<ProductBloc>().add(
-                                ViewProductEvent(selectedProduct: product),
-                              );
-                        },
-                      );
-                    } else {
-                      return const Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    }
-                  },
+                Container(
+                  height: double.infinity,
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    shrinkWrap: true,
+                    itemCount: state.products.length + (_isLoading ? 1 : 0),
+                    itemBuilder: (ctx, index) {
+                      if (index < state.products.length) {
+                        return ProductItem(
+                          product: state.products[index],
+                          onSelectProduct: (product) {
+                            context.read<ProductBloc>().add(
+                                  ViewProductEvent(selectedProduct: product),
+                                );
+                          },
+                        );
+                      } else {
+                        return const Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                    },
+                  ),
                 )
               else
                 const EmptyData(),
